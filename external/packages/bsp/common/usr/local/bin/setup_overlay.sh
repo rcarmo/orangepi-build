@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+source /etc/orangepi-release
+
 FLAG_FILE=/var/lib/overlay_done
 
 if [ -f $FLAG_FILE ]; then
@@ -22,7 +24,8 @@ partprobe "$DISK"
 sleep 1
 
 echo "Expand EXT4..."
-e2fsck -fy "$PART" || true
+e2fsck -f "$PART" -y || true
+sleep 1
 resize2fs "$PART"
 
 UUID=$(blkid -s UUID -o value "$PART")

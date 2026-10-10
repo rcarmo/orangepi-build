@@ -89,8 +89,8 @@ numix-gtk-theme
 p11-kit
 pasystray
 pavucontrol
-pavumeter
-policykit-1
+	polkitd
+	pkexec
 printer-driver-all
 profile-sync-daemon
 pulseaudio

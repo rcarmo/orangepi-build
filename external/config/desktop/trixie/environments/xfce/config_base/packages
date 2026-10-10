@@ -24,7 +24,6 @@ fonts-dejavu-core
 fonts-freefont-ttf
 fonts-guru
 fonts-guru-extra
-fonts-kacst
 fonts-kacst-one
 fonts-liberation
 fonts-nanum
@@ -85,14 +84,13 @@ plank
 pasystray
 pavucontrol
 pavucontrol-qt
-pavumeter
-policykit-1
+	polkitd
+	pkexec
 printer-driver-all
 profile-sync-daemon
 pulseaudio-module-bluetooth
 slick-greeter
 smbclient
-software-properties-gtk
 spice-vdagent
 system-config-printer
 terminator

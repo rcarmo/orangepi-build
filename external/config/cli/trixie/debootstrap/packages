@@ -32,3 +32,4 @@ udev
 whiptail
 wireless-regdb
 dconf-cli
+e2fsprogs

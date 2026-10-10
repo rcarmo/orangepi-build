@@ -21,4 +21,4 @@ u-boot-tools
 usbutils
 libpython3-dev
 python3-dev
-python3-venv
+python3.13-venv

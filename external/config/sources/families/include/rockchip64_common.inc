@@ -62,13 +62,17 @@ elif [[ $BOARDFAMILY == "rockchip-rk3588" ]]; then
 
 	BOOT_SCENARIO="${BOOT_SCENARIO:=spl-blobs}"
 
-	if [[ "${BOARD}x" =~ orangepi5maxx|orangepi5prox|orangepi5plusx|orangepiaimax|orangepi5x|orangepi5bx|orangepi5ultrax ]]; then
+	DDR_BLOB="${DDR_BLOB:=rk35/rk3588_ddr_lp4_2112MHz_lp5_2400MHz_v1.24_support_dmi_behavior_mode_1.bin}"
+	BL31_BLOB='rk35/rk3588_bl31_v1.56.elf'
 
-		DDR_BLOB="${DDR_BLOB:=rk35/rk3588_ddr_lp4_2112MHz_lp5_2400MHz_v1.16.bin}"
-		BL31_BLOB='rk35/rk3588_bl31_v1.45_20240422.elf'
+	# The 6.18 (next) branch uses mainline TF-A, taken into the tree as a
+	# prebuilt bl31.elf.  legacy/current keep the Rockchip blob from rkbin.
+	# Provenance: external/packages/blobs/rockchip/rk35/README.bl31
+	if [[ $BRANCH == next ]]; then
+		BL31_PATH="$EXTER/packages/blobs/rockchip/rk35/rk3588_bl31_tfa_v2.13.0.elf"
+		[[ -f $BL31_PATH ]] || exit_with_error "mainline ATF BL31 not found" "$BL31_PATH"
 	else
-		DDR_BLOB="${DDR_BLOB:=rk35/rk3588_ddr_lp4_2112MHz_lp5_2736MHz_v1.11.bin}"
-		BL31_BLOB='rk35/rk3588_bl31_v1.38.elf'
+		BL31_PATH="$RKBIN_DIR/$BL31_BLOB"
 	fi
 
 elif [[ $BOARD =~ orangepicm4|orangepi3b ]]; then
@@ -106,7 +110,9 @@ prepare_boot_configuration()
 
 	elif [[ $BOOT_SCENARIO == "spl-blobs" ]]; then
 
-		UBOOT_TARGET_MAP="BL31=$RKBIN_DIR/$BL31_BLOB spl/u-boot-spl.bin u-boot.dtb u-boot.itb;;idbloader.img u-boot.itb"
+		# BL31_PATH is set per-family above; rk3568 boards that also use this
+		# scenario never set it, so fall back to the rkbin blob.
+		UBOOT_TARGET_MAP="BL31=${BL31_PATH:-$RKBIN_DIR/$BL31_BLOB} spl/u-boot-spl.bin u-boot.dtb u-boot.itb;;idbloader.img u-boot.itb"
 		ATFSOURCE=''
 		ATF_COMPILE='no'
 

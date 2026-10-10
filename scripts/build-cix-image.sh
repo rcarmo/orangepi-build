@@ -130,8 +130,8 @@ function create_cix_image()
     boot_size=$(expr $boot_size \* 1024 \* 1024)
     #echo "boot_start: ${boot_start}Mib, boot_size: ${boot_size} bytes"
 
-    cp "${SCRIPT_DIR}/debian/grub-post-silicon.cfg" "${PATH_OUT}/images/grub.cfg"
-    if [[ "${RELEASE}" == "trixie" ]]; then
+    cp "${SCRIPT_DIR}/debian/grub-post-silicon-${BOARD}.cfg" "${PATH_OUT}/images/grub.cfg"
+    if [[ "${RELEASE}" == "trixie" && "${BOARD}" == "orangepi6plus" ]]; then
         cat <<-'GRUBCFG' >"${PATH_OUT}/images/grub.cfg"
 set debug=loader,mm
 set term=vt100
