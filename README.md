@@ -21,3 +21,23 @@ Soc | Boards |
 
 ## Supported Host Systems
 - Ubuntu 22.04
+
+## EROFS kernel support
+
+The shipped EROFS-capable kernel configurations enable built-in
+`CONFIG_EROFS_FS=y`, LZ4 compressed images (`CONFIG_EROFS_FS_ZIP=y`), extended
+attributes, POSIX ACLs and security labels. Older vendor kernels without an
+EROFS configuration entry are unchanged; no driver backport is included.
+Custom or previously saved kernel configurations still override these defaults.
+Rebuild the kernel to apply the changes; existing prebuilt kernels are unaffected.
+
+This does **not** change the system/root filesystem or image layout. To create
+and mount a separate EROFS image, install `erofs-utils` on the machine where you
+create it, then use, for example:
+
+```sh
+mkfs.erofs -zlz4hc data.erofs /path/to/data
+sudo mount -t erofs -o loop,ro data.erofs /mnt
+```
+
+Check the shipped configuration defaults with `python3 tests/check-erofs-configs.py`.
